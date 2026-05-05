@@ -2,7 +2,7 @@ name: Daily AI Updates Research
 
 on:
   schedule:
-    - cron: '30 16 * * *'  # 8:30 PM IST (3:00 PM UTC) every day
+    - cron: '30 17 * * *'  # 8:30 PM IST (3:00 PM UTC) every day
 
 jobs:
   research:
@@ -23,7 +23,7 @@ jobs:
       - name: Research AI updates with Claude
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          NIRAV_GITHUB_TOKEN: ${{ secrets.NIRAV_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python .github/scripts/ai-updates-research.py
       
       - name: Push changes to GitHub
