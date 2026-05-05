@@ -11,15 +11,15 @@ import os
 
 # Get credentials from environment variables (set in GitHub Secrets)
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+NIRAV_GITHUB_TOKEN = os.getenv("NIRAV_GITHUB_TOKEN")
 
-if not ANTHROPIC_API_KEY or not GITHUB_TOKEN:
-    print("❌ Error: ANTHROPIC_API_KEY or GITHUB_TOKEN not set in GitHub Secrets")
+if not ANTHROPIC_API_KEY or not NIRAV_GITHUB_TOKEN:
+    print("❌ Error: ANTHROPIC_API_KEY or NIRAV_GITHUB_TOKEN not set in GitHub Secrets")
     exit(1)
 
 # Initialize clients
 anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-github_client = github.Github(GITHUB_TOKEN)
+github_client = github.Github(NIRAV_GITHUB_TOKEN)
 
 # Get repository and today's date
 repo = github_client.get_repo()  # Gets the repo where the action is running
