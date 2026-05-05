@@ -2,7 +2,7 @@ name: Daily AI Updates Research
 
 on:
   schedule:
-    - cron: '30 10 * * *'  # 4 PM IST (10:30 AM UTC) every day
+    - cron: '0 15 * * *'  # 8:30 PM IST (3:00 PM UTC) every day
 
 jobs:
   research:
