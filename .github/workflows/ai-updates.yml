@@ -23,7 +23,7 @@ jobs:
       - name: Research AI updates with Claude
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NIRAV_GITHUB_TOKEN: ${{ secrets.NIRAV_GITHUB_TOKEN }}
         run: python .github/scripts/ai-updates-research.py
       
       - name: Push changes to GitHub
