@@ -1,1 +1,35 @@
+name: Daily AI Updates Research
 
+on:
+  schedule:
+    - cron: '30 10 * * *'  # 4 PM IST (10:30 AM UTC) every day
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install anthropic PyGithub
+      
+      - name: Research AI updates with Claude
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python .github/scripts/ai-updates-research.py
+      
+      - name: Push changes to GitHub
+        run: |
+          git config user.name "AI Updates Bot - Nirav"
+          git config user.email "nirav@niodbp.com"
+          git add .
+          git commit -m "Daily AI updates - $(date +%Y-%m-%d)" || true
+          git push
