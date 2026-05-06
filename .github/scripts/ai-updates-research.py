@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Research top 10 AI updates for today using Claude and commit to GitHub.
+Research top 10 AI updates for today using Claude with web search.
 This script is run by GitHub Actions daily.
 Includes automatic retry logic for API rate limits and temporary failures.
 """
@@ -10,6 +10,7 @@ import github
 from datetime import datetime
 import os
 import time
+import json
 
 # Get credentials from environment variables (set in GitHub Secrets)
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
@@ -38,7 +39,7 @@ print(f"📦 Repository: {REPO_NAME}")
 print()
 
 # Step 1: Research AI updates with Claude using web search (with retry logic)
-print("🔍 Researching top 10 AI updates...")
+print("🔍 Researching top 10 AI updates with web search...")
 
 max_retries = 3
 retry_count = 0
@@ -46,9 +47,10 @@ content = None
 
 while retry_count < max_retries and content is None:
     try:
-        message = anthropic_client.messages.create(
+        # Use Claude with web search to get actual today's news
+        response = anthropic_client.messages.create(
             model="claude-opus-4-6",
-            max_tokens=2000,
+            max_tokens=2500,
             tools=[
                 {
                     "type": "web_search",
@@ -58,7 +60,9 @@ while retry_count < max_retries and content is None:
             messages=[
                 {
                     "role": "user",
-                    "content": f"""Research the top 10 AI updates and announcements from today ({today}).
+                    "content": f"""Search the web for the top 10 AI updates and announcements from today ({today}).
+
+Use web search to find actual news from today.
 
 Please format your response as markdown with:
 1. A title with today's date
@@ -69,13 +73,30 @@ Please format your response as markdown with:
    - Source/where you found it
 
 Focus on significant announcements, product launches, research breakthroughs, and industry news.
-Make it professional and well-organized."""
+Make it professional and well-organized.
+
+If you cannot find 10 updates, provide as many as you can find with actual sources."""
                 }
             ]
         )
-        content = message.content[0].text
-        print("✅ Research complete")
-        print()
+        
+        # Extract the text response from Claude
+        content = ""
+        for block in response.content:
+            if hasattr(block, 'text'):
+                content += block.text
+        
+        if content.strip():
+            print("✅ Research complete")
+            print()
+        else:
+            print("⚠️  No content generated, retrying...")
+            retry_count += 1
+            if retry_count < max_retries:
+                wait_time = 2 ** retry_count
+                print(f"⏳ Retrying in {wait_time} seconds... (Attempt {retry_count}/{max_retries})")
+                time.sleep(wait_time)
+            continue
         
     except anthropic.RateLimitError as e:
         retry_count += 1
@@ -105,7 +126,7 @@ Make it professional and well-organized."""
         print(f"❌ Claude API error: {e}")
         exit(1)
 
-if content is None:
+if content is None or not content.strip():
     print("❌ Failed to get content after retries")
     exit(1)
 
