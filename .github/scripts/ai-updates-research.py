@@ -53,7 +53,7 @@ while retry_count < max_retries and content is None:
             max_tokens=2500,
             tools=[
                 {
-                    "type": "web_search",
+                    "type": "web_search_20250305",
                     "name": "web_search"
                 }
             ],
