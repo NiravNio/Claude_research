@@ -19,10 +19,9 @@ if not ANTHROPIC_API_KEY or not GITHUB_TOKEN:
 
 # Initialize clients
 anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-github_client = github.Github(GITHUB_TOKEN)
-
-# Get repository and today's date
-repo = github_client.get_repo()  # Gets the repo where the action is running
+github_client = github.Github(auth=github.Auth.Token(GITHUB_TOKEN))
+REPO_NAME = os.getenv("GITHUB_REPOSITORY")  # GitHub provides this automatically
+repo = github_client.get_repo(REPO_NAME)
 today = datetime.now().strftime("%Y-%m-%d")
 filename = f"ai-updates/AI-Updates-{today}.md"
 
