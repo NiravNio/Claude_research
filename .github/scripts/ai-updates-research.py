@@ -49,6 +49,12 @@ while retry_count < max_retries and content is None:
         message = anthropic_client.messages.create(
             model="claude-opus-4-6",
             max_tokens=2000,
+            tools=[
+                {
+                    "type": "web_search",
+                    "name": "web_search"
+                }
+            ],
             messages=[
                 {
                     "role": "user",
