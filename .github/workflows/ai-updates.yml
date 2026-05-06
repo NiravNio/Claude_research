@@ -2,7 +2,8 @@ name: Daily AI Updates Research
 
 on:
   schedule:
-    - cron: '45 08 * * *'  # 8:30 PM IST (3:00 PM UTC) every day
+    - cron: '30 15 * * *'  # 8:30 PM IST (3:00 PM UTC) every day
+  workflow_dispatch:
 
 jobs:
   research:
