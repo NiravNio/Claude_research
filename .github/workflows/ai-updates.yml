@@ -2,17 +2,17 @@ name: Daily AI Updates Research
 
 on:
   schedule:
-    - cron: '10 17 * * *'  # 8:30 PM IST (3:00 PM UTC) every day
+    - cron: '45 08 * * *'  # 8:30 PM IST (3:00 PM UTC) every day
 
 jobs:
   research:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       
