@@ -32,10 +32,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python .github/scripts/ai-updates-research.py
       
-      - name: Push changes to GitHub
+      - name: Commit and push changes
         run: |
           git config user.name "AI Updates Bot - Nirav"
           git config user.email "nirav@niodbp.com"
+          git pull origin main --ff-only
           git add .
           git commit -m "Daily AI updates - $(date +%Y-%m-%d)" || true
-          git push
+          git push origin main
