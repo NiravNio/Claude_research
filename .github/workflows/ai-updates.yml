@@ -5,6 +5,9 @@ on:
     - cron: '30 15 * * *'  # 8:30 PM IST (3:00 PM UTC) every day
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   research:
     runs-on: ubuntu-latest
